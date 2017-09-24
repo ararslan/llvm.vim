@@ -56,7 +56,7 @@ if [ ! -d "${VIMDIR}" ]; then
 fi
 
 # Copy the directories in LLVM's source tree into ours
-ls -p ${VIMDIR} | grep / | xargs -I{} rsync -r ${VIMDIR}/{} ${HERE}/{}
+ls -p ${VIMDIR} | grep / | xargs -I{} rsync -rvW --inplace ${VIMDIR}/{} ${HERE}/{}
 
 # Clean up
 rm -rf ${HERE}/llvm
