@@ -40,7 +40,7 @@ HERE="$(dirname ${0})"
 # full revision history
 git clone --depth 1 http://llvm.org/git/llvm ${HERE}/llvm
 
-if [ ! -d "./llvm/utils/vim" ]; then
+if [ ! -d "${HERE}/llvm/utils/vim" ]; then
     echo "Vim definitions not found in the LLVM source"
     echo "Please report this to https://github.com/ararslan/llvm.vim"
     exit 1
@@ -51,5 +51,43 @@ ls -p ${HERE}/llvm/utils/vim/ | grep / | xargs -I{} mv ${HERE}/llvm/utils/vim/{}
 
 # Clean up
 rm -rf ${HERE}/llvm
+
+# Make sure we're on a Travis cron job if we want to continue
+# We DO NOT want to push to master from pull requests!
+if [ -z "${TRAVIS}" || "${TRAVIS}" != "true" || "${TRAVIS_EVENT_TYPE}" != "cron" ]; then
+    echo "Done"
+    exit 0
+fi
+
+###########################################
+# Travis-only from here on
+
+# Just in case
+cd ${HERE}
+
+if git diff --quiet; then
+    echo "No upstream updates, nothing to commit"
+    exit 0
+fi
+
+git add --update
+git commit \
+    --author="Travis CI <travis@travis-ci.org>" \
+    --message="Incorporate upstream changes ($(date +%Y-%m-%d))"
+
+# The encrypted_* variables come from the Travis environment and are used to
+# decrypt deploykey.enc
+openssl aes-256-cbc \
+    -K $encrypted_03aa28550ce6_key -iv $encrypted_03aa28550ce6_iv \
+    -in deploykey.enc -out deploykey -d
+
+chmod 600 deploykey
+
+eval `ssh-agent -s`
+ssh-add deploykey
+
+# Push with the git protocol rather than https or whatever
+git remote set-url origin git@github.com:ararslan/llvm.git
+git push origin master
 
 echo "Done"

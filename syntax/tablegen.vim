@@ -2,6 +2,7 @@
 " Language:   TableGen
 " Maintainer: The LLVM team, http://llvm.org/
 " Version:    $Revision$
+" THIS IS AN EXPERIMENTAL, NON-FUNCTIONAL CHANGE THAT WILL GET OVERWRITTEN
 
 if version < 600
   syntax clear

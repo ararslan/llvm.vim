@@ -1,0 +1,5 @@
+language: generic
+notifications:
+  email: false
+script:
+  - ./update.sh
