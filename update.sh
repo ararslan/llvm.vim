@@ -33,28 +33,39 @@ if [ -z "$(command -v git)" ]; then
     echo "Unable to fetch LLVM source: git not found"
     exit 1
 fi
+if [ -z "$(command -v rsync)" ]; then
+    echo "Unable to update sources: rsync not found"
+    exit 1
+fi
 
 HERE="$(dirname ${0})"
+VIMDIR="${HERE}/llvm/utils/vim"
+
+if [ -d "${HERE}/llvm" ]; then
+    rm -rf ${HERE}/llvm
+fi
 
 # Perform a shallow clone, since LLVM is enormous and we don't care about the
 # full revision history
-git clone --depth 1 http://llvm.org/git/llvm ${HERE}/llvm
+git clone --depth 1 https://git.llvm.org/git/llvm ${HERE}/llvm
 
-if [ ! -d "${HERE}/llvm/utils/vim" ]; then
+if [ ! -d "${VIMDIR}" ]; then
     echo "Vim definitions not found in the LLVM source"
     echo "Please report this to https://github.com/ararslan/llvm.vim"
     exit 1
 fi
 
-# Move the directories out of LLVM's source tree and into ours
-ls -p ${HERE}/llvm/utils/vim/ | grep / | xargs -I{} mv -f ${HERE}/llvm/utils/vim/{} ${HERE}/
+# Copy the directories in LLVM's source tree into ours
+ls -p ${VIMDIR} | grep / | xargs -I{} rsync -r ${VIMDIR}/{} ${HERE}/{}
 
 # Clean up
 rm -rf ${HERE}/llvm
 
 # Make sure we're on a Travis cron job if we want to continue
 # We DO NOT want to push to master from pull requests!
-if [ -z "${TRAVIS}" || "${TRAVIS}" != "true" || "${TRAVIS_EVENT_TYPE}" != "cron" ]; then
+if [ -z "${TRAVIS}" -o \
+    \( -n "${TRAVIS}" -a "${TRAVIS}" != "true" \) -o \
+    \( -n "${TRAVIS_EVENT_TYPE}" -a "${TRAVIS_EVENT_TYPE}" != "cron" \) ]; then
     echo "Done"
     exit 0
 fi
@@ -70,7 +81,7 @@ if git diff --quiet; then
     exit 0
 fi
 
-git add --update
+git add --all
 git commit \
     --author="Travis CI <travis@travis-ci.org>" \
     --message="Incorporate upstream changes ($(date +%Y-%m-%d))"
