@@ -94,11 +94,16 @@ openssl aes-256-cbc \
 
 chmod 600 deploykey
 
-eval `ssh-agent -s`
+eval "$(ssh-agent -s)"
 ssh-add deploykey
 
 # Push with the git protocol rather than https or whatever
-git remote set-url origin git@github.com:ararslan/llvm.git
+if [ -z "$(git remote | grep origin)" ]; then
+    git remote add origin git@github.com:ararslan/llvm.vim.git
+else
+    git remote set-url origin git@github.com:ararslan/llvm.vim.git
+fi
+
 git push origin master
 
 echo "Done"
