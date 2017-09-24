@@ -2,7 +2,7 @@ language: generic
 notifications:
   email: false
 before_script:
-  - git fetch --unshallow
+  - if [ -a .git/shallow ]; then git fetch --unshallow; fi
   - git checkout master
 script:
   - ./update.sh
