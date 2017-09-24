@@ -1,5 +1,8 @@
 language: generic
 notifications:
   email: false
+before_script:
+  - git fetch --unshallow
+  - git checkout master
 script:
   - ./update.sh
