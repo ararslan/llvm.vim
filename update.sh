@@ -47,7 +47,7 @@ if [ ! -d "${HERE}/llvm/utils/vim" ]; then
 fi
 
 # Move the directories out of LLVM's source tree and into ours
-ls -p ${HERE}/llvm/utils/vim/ | grep / | xargs -I{} mv ${HERE}/llvm/utils/vim/{} ${HERE}/
+ls -p ${HERE}/llvm/utils/vim/ | grep / | xargs -I{} mv -f ${HERE}/llvm/utils/vim/{} ${HERE}/
 
 # Clean up
 rm -rf ${HERE}/llvm
