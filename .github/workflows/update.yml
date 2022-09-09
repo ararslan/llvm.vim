@@ -17,9 +17,7 @@ jobs:
           ref: main
           fetch-depth: 0
       - run: git filter-repo --subdirectory-filter llvm/utils/vim
-      - run: |
-          git remote rename origin upstream
-          git remote add origin https://github.com/ararslan/llvm.vim.git
+      - run: git remote add origin https://github.com/ararslan/llvm.vim.git
       - uses: ad-m/github-push-action@master
         with:
           branch: llvm
