@@ -1,0 +1,24 @@
+name: Update
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          sudo apt-get update
+          sudo apt-get install git-filter-repo
+      - uses: actions/checkout@v3
+        with:
+          repository: llvm/llvm-project
+          ref: main
+          fetch-depth: 0
+      - run: git filter-repo --subdirectory-filter llvm/utils/vim
+      - run: |
+          git remote rename origin upstream
+          git remote add origin https://github.com/ararslan/llvm.vim.git
+      - uses: ad-m/github-push-action@master
+        with:
+          branch: llvm
