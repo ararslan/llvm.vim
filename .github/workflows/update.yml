@@ -1,3 +1,4 @@
+# This file is released into the public domain
 name: Update
 on:
   schedule:
@@ -20,4 +21,4 @@ jobs:
       - run: git remote add origin https://github.com/ararslan/llvm.vim.git
       - uses: ad-m/github-push-action@master
         with:
-          branch: llvm
+          branch: main

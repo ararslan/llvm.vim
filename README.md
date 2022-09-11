@@ -1,15 +1,17 @@
 # llvm.vim
 
-[![Build Status](https://travis-ci.org/ararslan/llvm.vim.svg?branch=master)](https://travis-ci.org/ararslan/llvm.vim)
+[![Build Status](https://github.com/ararslan/llvm.vim/workflows/update/badge.svg)](https://github.com/ararslan/llvm.vim/actions?query=workflow%3Aupdate+branch%3Async)
 
 The Vim definitions from the LLVM source tree, providing syntax recognition for LLVM
 assembly (.ll) and TableGen (.tg) files.
 
-The plugin files are extracted manually by running the `update.sh` script.
-This runs on a Travis cron job once a week to ensure that everything remains current.
+The plugin files are extracted manually by running the GitHub Action specified in
+`update.yml`.
+This runs as a cron job once a week to ensure that everything remains current.
 
 If there is an issue with the definitions themselves, please file an issue with LLVM.
-If there is an issue with the update script, please file an issue here.
+If there is an issue with the syncing between upstream LLVM and this repository, please
+file an issue here.
 
 ## Installation
 
@@ -31,10 +33,10 @@ command line outside of Vim.
 ## Disclaimer and License
 
 This project is _not_ affiliated with LLVM, it is merely a repackaging of code
-from the LLVM source tree, which is licensed under UIUC/NCSA, copyright the LLVM
-developers.
-A copy of the UIUC/NCSA license is included in the LICENSE file.
-The only code here which is not part of LLVM is the update script and the Travis
-configuration.
-Those are licensed under the 2-Clause BSD License, which appears at the top of
-the update script.
+from the LLVM source tree.
+A copy of LLVM's license, which applies only to the contents of the `main` branch, is
+included in the LICENSE file on this branch.
+The file is not on the `main` branch directly as that would interfere with how the
+contents are synced from upstream.
+The only code here which is not part of LLVM is the GitHub Action, which is placed
+into the public domain.
