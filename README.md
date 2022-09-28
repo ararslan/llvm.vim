@@ -1,6 +1,6 @@
 # llvm.vim
 
-[![Build Status](https://github.com/ararslan/llvm.vim/workflows/update/badge.svg)](https://github.com/ararslan/llvm.vim/actions?query=workflow%3Aupdate+branch%3Async)
+[![Build Status](https://github.com/ararslan/llvm.vim/workflows/Update/badge.svg)](https://github.com/ararslan/llvm.vim/actions?query=workflow%3AUpdate+branch%3Async)
 
 The Vim definitions from the LLVM source tree, providing syntax recognition for LLVM
 assembly (.ll) and TableGen (.tg) files.
