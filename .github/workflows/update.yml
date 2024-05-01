@@ -12,7 +12,7 @@ jobs:
           sudo wget -O $(git --exec-path)/git-filter-repo \
             https://raw.githubusercontent.com/newren/git-filter-repo/main/git-filter-repo
           sudo chmod +x $(git --exec-path)/git-filter-repo
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: llvm/llvm-project
           ref: main
